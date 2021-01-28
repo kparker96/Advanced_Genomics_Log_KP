@@ -123,10 +123,10 @@
 	13- push your notebook file to your github page
 	
 
-##Day 03 Exercise 2021-Jan-27
-###Day 02 Homework  
+## Day 03 Exercise 2021-Jan-27
+### Day 02 Homework  
 
-###1- Write an sbatch script to cp the files /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/originalfastqs/ into your own data directory: KatieP-HADB03
+### 1- Write an sbatch script to cp the files /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/originalfastqs/ into your own data directory: KatieP-HADB03
 	
 	$ ssh kpark049@turing.hpc.odu.edu
 	$ cd /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data
@@ -135,7 +135,7 @@
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data
  
 
-###2- Add the content of your sbatch script to your logfile 
+### 2- Add the content of your sbatch script to your logfile 
 	
 	$ nano KPCopyLane03.sh
 
@@ -150,19 +150,19 @@
 	cp /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/originalfastqs/HADB03*.fastq.gz /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data
 
 
-###3- submit the slurm script (sbatch scripname.sh) and verify that it's working (by squeue -u yourusername multiple times and checking the destination directory to make sure the files are being created)
+### 3- submit the slurm script (sbatch scripname.sh) and verify that it's working (by squeue -u yourusername multiple times and checking the destination directory to make sure the files are being created)
 
 	$ sbatch KPCopyLane03.sh
 	Submitted batch job 9270445
 
 	$ squeue -u kpark049
 	
-###4- Make sure this is all documented on your github notebook
+### 4- Make sure this is all documented on your github notebook
 	\ (•◡•) /
 	
 
 
-###5- Write a sbatch script to gunzip all the fastq.gz files in your data directory
+### 5- Write a sbatch script to gunzip all the fastq.gz files in your data directory
 
 	$nano KPGunzipLane03.sh
 
@@ -180,15 +180,15 @@
 	$squeue -u kpark049
 
 
-###6- Push your notebook file to your github page (document everything on your github notebook, drink a beer, and realize that all that work was just to get the data organized to start looking at it!)  
+### 6- Push your notebook file to your github page (document everything on your github notebook, drink a beer, and realize that all that work was just to get the data organized to start looking at it!)  
 
 	\ (•◡•) /  
 
 
-###Day03 Homework
+### Day03 Homework
 
 
-###1- cp the /cm/shared/courses/dbarshis/21AdvGenomics/assignments_exercises/day03 directory (and files) to your sandbox
+### 1- cp the /cm/shared/courses/dbarshis/21AdvGenomics/assignments_exercises/day03 directory (and files) to your sandbox
 
 	$ pwd 
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker
@@ -199,7 +199,7 @@
 	data  day03  groundrules.txt  KP_exercise1.txt  nano.save  nano.save.1  scripts  
 
 
-###2- mkdir a fastq directory in your data directory and mv all the .fastq files into this directory
+### 2- mkdir a fastq directory in your data directory and mv all the .fastq files into this directory
 	$ pwd 
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data
 
@@ -211,20 +211,20 @@
 
 
 
-###3a- cp the renamingtable_complete.txt from the day03 directory into your fastq directory 
+### 3a- cp the renamingtable_complete.txt from the day03 directory into your fastq directory 
 	$ pwd 
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data
 
 	$ cp ../day03/renamingtable_complete.txt ./fastq/
 
-###3b- cp the /cm/shared/courses/dbarshis/21AdvGenomics/scripts/renamer_advbioinf.py script into your sandbox scripts folder 
+### 3b- cp the /cm/shared/courses/dbarshis/21AdvGenomics/scripts/renamer_advbioinf.py script into your sandbox scripts folder 
 
 	$ pwd 
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker
 
 	$ cp /cm/shared/courses/dbarshis/21AdvGenomics/scripts/renamer_advbioinf.py ./scripts/
 
-###3c- less the new script and check out the usage statement
+### 3c- less the new script and check out the usage statement
 	
 	$ $ head ../scripts/renamer_advbioinf.py
 
@@ -240,7 +240,7 @@
         linecount+=1
 
 
-###4- run the renamer_advbioinf.py script in your fastq folder using the renamingtable_complete.txt as practice and verify the output to the screen by hand
+### 4- run the renamer_advbioinf.py script in your fastq folder using the renamingtable_complete.txt as practice and verify the output to the screen by hand
 
 	$ pwd
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq
@@ -346,7 +346,7 @@
 	mv HADB06-P_S112_L007_R1_001.fastq RI_B_07_18.fastq
 
 
-###5- Uncomment the last line of the renaming script in your scripts folder that starts with os.popen and comment out the next to last line that starts with print
+### 5- Uncomment the last line of the renaming script in your scripts folder that starts with os.popen and comment out the next to last line that starts with print
 
 	$pwd 
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/scripts
@@ -368,7 +368,7 @@
                 os.popen('mv %s %s' %(cols[0], cols[1])) 
 	
 
-###6- write a sbatch script and submit it to rename all the .fastq files according to the renaming table using your renamer_advbioinf.py script
+### 6- write a sbatch script and submit it to rename all the .fastq files according to the renaming table using your renamer_advbioinf.py script
 	$pwd 
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq
 
@@ -394,15 +394,15 @@
            9270432      main       sh kpark049  R    5:48:21      1 coreV2-25-072
 
 
-###7- Make sure this is all documented on your github page
-###8- The naming convention for the files is as follows:
+### 7- Make sure this is all documented on your github page
+### 8- The naming convention for the files is as follows:
 * SOURCEPOPULATION_SYMBIOTICSTATE_GENOTYPE_TEMPERATURE.fastq
 * There are 2 sources: Virginia and Rhode Island
 * There are 2 symbiotic states: Brown and White  
 
-###9- Next, you're going to start the process of adapter clipping and quality trimming all the renamed .fastq files in batches, by lane
+### 9- Next, you're going to start the process of adapter clipping and quality trimming all the renamed .fastq files in batches, by lane
 
-###10- cp the script /cm/shared/courses/dbarshis/21AdvGenomics/scripts/Trimclipfilterstatsbatch_advbioinf.py into your scripts directory  
+### 10- cp the script /cm/shared/courses/dbarshis/21AdvGenomics/scripts/Trimclipfilterstatsbatch_advbioinf.py into your scripts directory  
 	$ pwd 
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/
 
@@ -411,7 +411,7 @@
 	$ $ ls
 	avg_cov_len_fasta_advbioinf.py  renamer_advbioinf.py  Trimclipfilterstatsbatch_advbioinf.py
 
-###11- Less/head the new script and check out the usage statement
+### 11- Less/head the new script and check out the usage statement
 
 	$ head Trimclipfilterstatsbatch_advbioinf.py
 	#!/usr/bin/env python
@@ -425,14 +425,14 @@
 	# Will quality trim multiple SINGLE-END fastq files
 	# Things to customize for your particular platform:
 
-###12- cp the /cm/shared/courses/dbarshis/21AdvGenomics/assignments_exercises/day03/adapterlist_advbioinf.txt into the working directory with your fastq files
+### 12- cp the /cm/shared/courses/dbarshis/21AdvGenomics/assignments_exercises/day03/adapterlist_advbioinf.txt into the working directory with your fastq files
 
 	$ pwd
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq
 	
 	$cp /cm/shared/courses/dbarshis/21AdvGenomics/assignments_exercises/day03/adapterlist_advbioinf.txt ./
 
-###13. Make a sbatch script for the Trimclipfilter... script and run it on your fastq files
+### 13. Make a sbatch script for the Trimclipfilter... script and run it on your fastq files
 
 	$ mkdir testing
 	$ pwd 
@@ -488,6 +488,6 @@
 	           9270432      main       sh kpark049  R    6:16:57      1 coreV2-25-072
 	           9270564      main       sh kpark049  R       7:56      1 coreV2-25-007
 	
-###14- This will take a while (like days)
-###15- Now might be a good time to update everything on your github
+### 14- This will take a while (like days)
+### 15- Now might be a good time to update everything on your github
 
