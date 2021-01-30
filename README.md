@@ -489,5 +489,80 @@
 	           9270564      main       sh kpark049  R       7:56      1 coreV2-25-007
 	
 ### 14- This will take a while (like days)
-### 15- Now might be a good time to update everything on your github
+### 15- Now might be a good time to update everything on your github  
+
+## Day 04 Homework 2021-Jan-29
+
+### 1- Add your trimclipstats.txt output to the full class datafile /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/Fulltrimclipstatstable.txt using the following steps
+
+### 1a- run /cm/shared/courses/dbarshis/21AdvGenomics/scripts/Schafran_trimstatstable_advbioinf_clippedtrimmed.py -h to examine usage  
+
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq
+
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/scripts/Schafran_trimstatstable_advbioinf_clippedtrimmed.py -h 
+	Written by Peter Schafran pscha005@odu.edu 5-Oct-2015
+
+	This script takes a stats output file from fastx_clipper and converts it into a table.
+
+	Usage: Schafran_trimstatstable.py [-c, -v, -h] inputfile.txt outputfile.txt
+
+	Options (-c and -v must be listed separately to run together):
+	-h      Display this help message
+	-c      Use comma delimiter instead of tabs
+	-v      Verbose mode (print steps to stdout)
+
+### 1b- Run the script on your data with the outputfilename YOURNAME_trimclipstatsout.txt  
+
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/scripts/Schafran_trimstatstable_advbioinf_clippedtrimmed.py trimclipstats.txt KP_trimclipstatsout.txt 
+
+	$ ls
+	filteringstats     kparkersRename.txt  kpFullTripClip.sh        originalfastqs  renamingtable_complete.txt  trimclipstats.txt
+	kparkersRename.sh  kpFullTrimclip.txt  KP_trimclipstatsout.txt  QCFastqs        Testing 
+
+### 1c- Add YOURNAME_trimclipstatsout.txt to the class file by running tail -n +2 YOURNAME_trimclipstatsout.txt >> /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/Fulltrimclipstatstable.txt  
+
+	$ tail -n +2 KP_trimclipstatsout.txt >> /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/Fulltrimclipstatstable.txt  
+
+### 2- Now we're going to map our reads back to our assembly using the bowtie2 alignment algorithm (starting to follow this pipeline https://github.com/bethsheets/SNPcalling_tutorial)  
+
+### 3- write an sbatch script to do the following commands in sequence on your _clippedtrimmedfilterd.fastq datafiles from your lane of data
+	
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+
+	$ nano 
+	#!/bin/bash -l
+
+	#SBATCH -o KP_bowtiealn.txt
+	#SBATCH -n 1
+	#SBATCH --mail-user=kpark049@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=KPnewbowtie
+
+	module load bowtie2/2.4
+	for i in *_clippedtrimmed.fastq; do bowtie2 --rg-id ${i%_clippedtrimmed.fastq} \
+	--rg SM:${i%_clippedtrimmed.fastq} \
+	--very-sensitive -x /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/refassembly/Apoc_hostsym -U $i \
+	> ${i%_clippedtrimmedfilterd.fastq}.sam --no-unal -k 5; done
+	
+	$ salloc 
+	salloc: Pending job allocation 9271181
+	salloc: job 9271181 queued and waiting for resources
+	salloc: job 9271181 has been allocated resources
+	salloc: Granted job allocation 9271181
+
+	$ sbatch KP_bowtiealn.sh
+	Submitted batch job 9271182  
+
+	$ squeue -u kpark049
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           9269196      main       sh kpark049  R 5-22:30:02      1 coreV1-22-005
+           9270432      main       sh kpark049  R 3-00:00:01      1 coreV2-25-072
+           9271182      main KPnewbow kpark049  R       0:25      1 coreV2-25-049
+           9271181      main       sh kpark049  R       4:55      1 coreV2-25-049  
+
+### 4- Submit and add everything to your logfile
+		\ (•◡•) /  
+
 
