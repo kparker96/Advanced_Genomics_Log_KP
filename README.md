@@ -566,3 +566,51 @@
 		\ (•◡•) /  
 
 
+## Day 05 Homework 2021-Feb-03
+
+###1- Team up with a partner for this one and work only on a combined set of data for your two lanes of sequences
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+
+	$ mkdir Trinity 
+	$ mv *.fastq ./Trinity
+
+	# Ivan copied his fastq files into the Trinity directory in my sandbox
+
+	$ ls *.fastq head -32 > 32fileslist.txt
+	# used regex to list out list all files on one line separated by comma and copy/pasted into the Trinitybash.sh file
+
+
+### 2- Run the Trinity denovo assembler on your clippedtrimmed.fastq files for your two lanes together 
+### 3- Modify the below sbatch script (note the differences in the header compared to the previous one)
+
+
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs/Trinity
+
+	$ nano Trinitybash.sh
+
+	#!/bin/bash -l
+
+	#SBATCH -o Katie_Ivan_Trinity.txt
+	#SBATCH -n 32
+	#SBATCH -p himem
+	#SBATCH --mail-user=ilope002@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=KatieIvanTrinity
+
+	enable_lmod
+	module load container_env trinity
+
+	crun Trinity --seqType fq --max_memory 768G --single RI_B_02_14_clippedtrimmed.fastq,RI_B_02_18_clippedtrimmed.fastq,RI_B_02_22_clippedtrimmed.fastq,RI_B_03_14_clippedtrimmed.fastq,RI_B_03_18_clippedtrimmed.fastq,RI_B_03_22_clippedtrimmed.fastq,RI_B_09_SNP_clippedtrimmed.fastq,RI_B_10_SNP_clippedtrimmed.fastq,RI_W_02_14_clippedtrimmed.fastq,RI_W_02_18_clippedtrimmed.fastq,RI_W_02_22_clippedtrimmed.fastq,RI_W_03_14_clippedtrimmed.fastq,RI_W_03_18_clippedtrimmed.fastq,RI_W_03_22_clippedtrimmed.fastq,RI_W_09_SNP_clippedtrimmed.fastq,RI_W_10_SNP_clippedtrimmed.fastq,VA_B_02_14_clippedtrimmed.fastq,VA_B_02_18_clippedtrimmed.fastq,VA_B_02_22_clippedtrimmed.fastq,VA_B_03_14_clippedtrimmed.fastq,VA_B_03_18_clippedtrimmed.fastq,VA_B_03_22_clippedtrimmed.fastq,VA_B_08_SNP_clippedtrimmed.fastq,VA_B_10_SNP_clippedtrimmed.fastq,VA_W_02_14_clippedtrimmed.fastq,VA_W_02_18_clippedtrimmed.fastq,VA_W_02_22_clippedtrimmed.fastq,VA_W_03_14_clippedtrimmed.fastq,VA_W_03_18_clippedtrimmed.fastq,VA_W_03_22_clippedtrimmed.fastq,VA_W_09_SNP_clippedtrimmed.fastq,VA_W_10_SNP_clippedtrimmed.fastq --CPU 32
+	
+	$ salloc
+	salloc: Pending job allocation 9272354
+	salloc: job 9272354 queued and waiting for resources
+	salloc: job 9272354 has been allocated resources
+	salloc: Granted job allocation 9272354
+	
+	$ sbatch Trinitybash.sh
+	Submitted batch job 9272386
+### 4- Check https://trinityrnaseq.github.io/ for usage info
+### 5- Submit your trinity script
