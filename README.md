@@ -568,7 +568,7 @@
 
 ## Day 05 Homework 2021-Feb-03
 
-###1- Team up with a partner for this one and work only on a combined set of data for your two lanes of sequences
+### 1- Team up with a partner for this one and work only on a combined set of data for your two lanes of sequences
 	$ pwd
 	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
 
@@ -614,3 +614,433 @@
 	Submitted batch job 9272386
 ### 4- Check https://trinityrnaseq.github.io/ for usage info
 ### 5- Submit your trinity script
+
+## Day 06 Homework 2021-Feb-05  
+
+### Assembly quality assessment (following the first two steps in the recommended trinity assessment protocol from https://github.com/trinityrnaseq/trinityrnaseq/wiki/Transcriptome-Assembly-Quality-Assessment) 
+
+### 1- start an interactive session via salloc and run the /cm/shared/apps/trinity/2.0.6/util/TrinityStats.pl script on your Trinity.fasta output from your assembly
+
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs/Trinity/djb_trinity_out  
+	
+	$ salloc 
+	salloc: Pending job allocation 9272891
+	salloc: job 9272891 queued and waiting for resources
+	salloc: job 9272891 has been allocated resources
+	salloc: Granted job allocation 9272891
+
+	$ /cm/shared/apps/trinity/2.0.6/util/TrinityStats.pl Trinity.fasta  
+		################################
+	## Counts of transcripts, etc.
+	################################
+	Total trinity 'genes':  34661
+	Total trinity transcripts:      36565
+	Percent GC: 44.57
+	
+	########################################
+	Stats based on ALL transcript contigs:
+	########################################
+
+        Contig N10: 1476
+        Contig N20: 874
+        Contig N30: 619
+        Contig N40: 476
+        Contig N50: 388
+
+        Median contig length: 285
+        Average contig: 388.75
+        Total assembled bases: 14214539
+
+
+	#####################################################
+	## Stats based on ONLY LONGEST ISOFORM per 'GENE':
+	#####################################################
+
+        Contig N10: 1217
+        Contig N20: 746
+        Contig N30: 554
+        Contig N40: 440
+        Contig N50: 368
+
+        Median contig length: 282
+        Average contig: 371.25
+        Total assembled bases: 12867801
+	
+	
+
+### 2- compare this with the output from avg_cov_len_fasta_advbioinf.py on our class reference assembly (/cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/refassembly/15079_Apoc_hostsym.fasta) and add both to your logfile
+
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/scripts/avg_cov_len_fasta_advbioinf.py /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/refassembly/15079_Apoc_hostsym.fasta
+	
+	The total number of sequences is 15079
+	The average sequence length is 876
+	The total number of bases is 13210470
+	The minimum sequence length is 500
+	The maximum sequence length is 10795
+	The N50 is 881
+	Median Length = 578
+	contigs < 150bp = 0
+	contigs >= 500bp = 15079
+	contigs >= 1000bp = 3660
+	contigs >= 2000bp = 536
+
+
+### 3- less or head your bowtie2 job output file to look at your alignment statistics and calculate the following from the information:
+	$ less KP_bowtiealn.txt
+	
+### 3a-the mean percent "overall alignment rate"
+	
+	$ grep "overall alignment rate" KP_bowtiealn.txt
+	
+	1.61% overall alignment rate
+	2.98% overall alignment rate
+	1.43% overall alignment rate
+	1.37% overall alignment rate
+	1.90% overall alignment rate
+	2.41% overall alignment rate
+	2.13% overall alignment rate
+	1.34% overall alignment rate
+	1.77% overall alignment rate
+	1.73% overall alignment rate
+	1.75% overall alignment rate
+	1.61% overall alignment rate
+	1.54% overall alignment rate
+	8.43% overall alignment rate
+	1.61% overall alignment rate
+	1.81% overall alignment rate
+
+	*edited in excel to get average percent*
+	
+	
+### 3b-the mean percent reads "aligned exactly 1 time"
+	
+	$ grep "aligned exactly 1 time" KP_bowtiealn.txt
+	
+	199136 (1.11%) aligned exactly 1 time
+	6309 (1.09%) aligned exactly 1 time
+    244035 (0.99%) aligned exactly 1 time
+    294912 (0.93%) aligned exactly 1 time
+    288242 (1.24%) aligned exactly 1 time
+    441624 (1.62%) aligned exactly 1 time
+    365338 (1.41%) aligned exactly 1 time
+    155231 (0.93%) aligned exactly 1 time
+    264639 (1.19%) aligned exactly 1 time
+    297344 (1.11%) aligned exactly 1 time
+    300536 (1.11%) aligned exactly 1 time
+    247561 (1.04%) aligned exactly 1 time
+    295472 (1.09%) aligned exactly 1 time
+    138704 (4.59%) aligned exactly 1 time
+    308675 (1.16%) aligned exactly 1 time
+    268125 (0.99%) aligned exactly 1 time 
+
+	*edited in excel to get average percent*
+	
+### 3c-the mean number of reads "aligned exactly 1 time"
+	
+	$ grep "aligned exactly 1 time" KP_bowtiealn.txt  
+
+	199136 (1.11%) aligned exactly 1 time
+	6309 (1.09%) aligned exactly 1 time
+    244035 (0.99%) aligned exactly 1 time
+    294912 (0.93%) aligned exactly 1 time
+    288242 (1.24%) aligned exactly 1 time
+    441624 (1.62%) aligned exactly 1 time
+    365338 (1.41%) aligned exactly 1 time
+    155231 (0.93%) aligned exactly 1 time
+    264639 (1.19%) aligned exactly 1 time
+    297344 (1.11%) aligned exactly 1 time
+    300536 (1.11%) aligned exactly 1 time
+    247561 (1.04%) aligned exactly 1 time
+    295472 (1.09%) aligned exactly 1 time
+    138704 (4.59%) aligned exactly 1 time
+    308675 (1.16%) aligned exactly 1 time
+    268125 (0.99%) aligned exactly 1 time 
+	
+	*edited in excel to get average percent*
+	
+### 3d-the mean percent reads "aligned >1 times"
+	
+	90147 (0.50%) aligned >1 times
+    10960 (1.89%) aligned >1 times
+    108147 (0.44%) aligned >1 times
+    136328 (0.43%) aligned >1 times
+    153600 (0.66%) aligned >1 times
+    214633 (0.79%) aligned >1 times
+    187386 (0.72%) aligned >1 times
+    69361 (0.41%) aligned >1 times
+    128013 (0.58%) aligned >1 times
+    165104 (0.62%) aligned >1 times
+    173888 (0.64%) aligned >1 times
+    137053 (0.57%) aligned >1 times
+    121462 (0.45%) aligned >1 times
+    115710 (3.83%) aligned >1 times
+    121835 (0.46%) aligned >1 times
+    223001 (0.82%) aligned >1 times
+	
+	*edited in excel to get average percent*
+
+### 4- add your statistics as single rows to the shared table /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/alignmentstatstable.txt as tab-delimited text in the following order: LaneX_yourinitials	b-the mean percent "overall alignment rate"	c-the mean percent reads "aligned exactly 1 time"	d-the mean number of reads "aligned exactly 1 time"	e-the mean percent reads "aligned >1 times"
+
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+	
+	$ nano LaneX_KP.txt
+	
+	2.21375 1.35    257242.6875     0.863125
+	
+	$ cat LaneX_KP.txt >> /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/alignmentstatstable.txt
+
+
+### 5- Data cleanup and archiving:
+### 5a- mv your Trinity.fasta file from your trinity_out_dir to a folder called testassembly in your data directory
+
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data
+
+	$ mkdir testassembly
+
+
+	$ mv djb_trinity_out/Trinity.fasta /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/testassembly
+
+### 5b- set up a sbatch script to:
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data	
+
+	$ nano KP_rm_dirs.sh
+
+	#!/bin/bash -l
+
+	#SBATCH -o KP_rm_dirs.txt
+	#SBATCH -n 1
+	#SBATCH --mail-user=kpark049@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=KP_rm_dirs
+
+	rm -r /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs/Trinity/trinity_out_dir
+	rm -r /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/originalfastqs
+	rm -r /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/filteringstats
+
+	$ salloc 
+	salloc: Pending job allocation 9272892
+	salloc: job 9272892 queued and waiting for resources
+	salloc: job 9272892 has been allocated resources
+	salloc: Granted job allocation 9272892
+
+	$ sbatch KP_rm_dirs.sh
+	Submitted batch job 9272893
+	
+
+### 6- submit a blast against sprot from your testassembly folder using the following command
+	 pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/testassembly
+
+	$ nano KP_blastx2sprot.sh
+
+	#!/bin/bash -l
+
+	#SBATCH -o blastx2sprot.txt
+	#SBATCH -n 6         
+	#SBATCH --mail-user=kpark049@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=kpblastx2sprot
+
+	enable_lmod
+	module load container_env blast
+	blastx -query Trinity.fasta -db /cm/shared/apps/blast/databases/uniprot_sprot_Sep2018 -out kpblastx.outfmt6 \
+	        -evalue 1e-20 -num_threads 6 -max_target_seqs 1 -outfmt 6 
+
+
+ 	$ sbatch KP_blastx2sprot.sh
+	Submitted batch job 9272894
+
+### Exploring our SAM files, check out http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#sam-output for bowtie2 specific output and http://bio-bwa.sourceforge.net/bwa.shtml#4 for general SAM output
+
+### 7- head one of your .sam files to look at the header
+	
+	$ pwd
+	
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+	
+	$ head RI_B_03_14_clippedtrimmed.fastq.sam
+	@HD     VN:1.0  SO:unsorted
+	@SQ     SN:TR78|c0_g1_i1_coral  LN:1109
+	@SQ     SN:TR78|c0_g2_i1_coral  LN:1109
+	@SQ     SN:TR79|c0_g1_i1_coral  LN:610
+	@SQ     SN:TR79|c0_g2_i1_coral  LN:1549
+	@SQ     SN:TR87|c0_g1_i1_coral  LN:732
+	@SQ     SN:TR93|c0_g1_i1_coral  LN:550
+	@SQ     SN:TR101|c0_g1_i1_coral LN:673
+	@SQ     SN:TR104|c0_g1_i1_coral LN:607
+	@SQ     SN:TR105|c0_g1_i1_coral LN:587
+
+
+### 8- grep -v '@' your.sam | head to look at the sequence read lines, why does this work to exclude the header lines?  
+
+	$ grep -v "@" RI_B_03_14_clippedtrimmed.fastq.sam | head
+	K00188:59:HMTFHBBXX:4:1101:2138:1683    0       TR66073|c0_g2_i1_coral  143     255     51M     *       0       0       ATGAACAACAAGATGCCGGTTGCAGTGCAATCGTATGCCGAAAGATTTGCA    A-AAFJJJJJJFFJF7JJJJJJJJFJ<FJJ7FJ-<FFJ-AF<7FFJ-<-<<     AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0
+	NM:i:0  MD:Z:51 YT:Z:UU RG:Z:RI_B_03_14
+	K00188:59:HMTFHBBXX:4:1101:3214:1683    0       TR65725|c0_g1_i1_coral  388     255     51M     *       0       0       CCCAAACAAGAAGAGAAACATCACTCCTAACTTTGTCTAGTCCAGCTGCCA    AAAFFFJJJJJJ-F<JJ<JJJJJJF<F7JJJJF-FJFFFJJJJJJJAFFAJ     AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0
+	NM:i:0  MD:Z:51 YT:Z:UU RG:Z:RI_B_03_14
+	K00188:59:HMTFHBBXX:4:1101:15168:1683   0       TR41309|c0_g1_i1_coral  317     255     51M     *       0       0       GGAAGGTATAAATTCACAACAGAAACTATTTTGAAGAAATTCATCTTATCG    AA<AAF<FJJJJJJJJJJJJFFJJJJFJF-FJJJJFJJ<<<JJAJJJJJJF     AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0
+	NM:i:0  MD:Z:51 YT:Z:UU RG:Z:RI_B_03_14
+
+### 9- in an interactive session run /cm/shared/courses/dbarshis/21AdvGenomics/scripts/get_explain_sam_flags_advbioinf.py on 2-3 of your .sam files using * to select 2-3 at the same time.
+
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/scripts/get_explain_sam_flags_advbioinf.py RI_B_03_14_clippedtrimmed.fastq.sam RI_B_03_18_clippedtrimmed.fastq.sam RI_B_03_22_clippedtrimmed.fastq.sam
+	
+	['0', '272', '256', '16']
+	0 :
+	272 :
+	        read reverse strand
+	        not primary alignment
+	256 :
+	        not primary alignment
+	16 :
+	        read reverse strand
+	RI_B_03_18_clippedtrimmed.fastq.sam
+	['0', '272', '256', '16']
+	0 :
+	272 :
+	        read reverse strand
+	        not primary alignment
+	256 :
+	        not primary alignment
+	16 :
+	        read reverse strand
+	RI_B_03_22_clippedtrimmed.fastq.sam
+	['0', '272', '256', '16']
+	0 :
+	272 :
+	        read reverse strand
+	        not primary alignment
+	256 :
+	        not primary alignment
+	16 :
+	        read reverse strand
+
+
+### 10- we need to run the read sorting step required for SNP calling, so if you have time, set up and run the following script on your .sam files to finish before Wednesday:
+
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+
+	$ nano SNP_sort.sh 
+	#!/bin/bash -l
+	
+	#SBATCH -o KP_SNP_Sort.txt
+	#SBATCH -n 1         
+	#SBATCH --mail-user=kpark049@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=KP_SNP_Sort
+	
+	enable_lmod
+	module load samtools/1
+	for i in *.sam; do `samtools view -bS $i > ${i%.sam}_UNSORTED.bam`; done
+	
+	for i in *UNSORTED.bam; do samtools sort $i > ${i%_UNSORTED.bam}.bam
+	samtools index ${i%_UNSORTED.bam}.bam
+	done
+
+	$ sbatch SNP_sort.sh
+	Submitted batch job 9272898
+
+## Day 07 Homework 2021-Feb-10  
+
+### Day07-assess the quality of your assembly, cleanup data, start genotyping:
+### Make sure to add all this to your logfile as you go, including the output from the various scripts/greps/etc.
+
+### 1- Run the following command on your sprot output file to process into the contig length/match format that trinity examines
+
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/testassembly
+	
+	$ nano KP_blastparsing.sh
+
+	#!/bin/bash -l
+
+	#SBATCH -o KP_blastparsing.txt
+	#SBATCH -n 1
+	#SBATCH --mail-user=kpark049@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=blastparsing
+
+	/cm/shared/apps/trinity/2.0.6/util/analyze_blastPlus_topHit_coverage.pl kpblastx.outfmt6 Trinity.fasta /cm/shared/apps/blast/databases/uniprot_sprot_Sep2018.fasta
+
+	$ salloc 
+	salloc: Pending job allocation 9276479
+	salloc: job 9276479 queued and waiting for resources
+	salloc: job 9276479 has been allocated resources
+	salloc: Granted job allocation 9276479
+	
+	$ sbatch KP_blastparsing.sh
+	Submitted batch job 9276481
+	
+	$ cat KP_blastparsing.txt
+		#hit_pct_cov_bin        count_in_bin    >bin_below
+	100     208     208
+	90      104     312
+	80      109     421
+	70      142     563
+	60      175     738
+	50      274     1012
+	40      418     1430
+	30      817     2247
+	20      1393    3640
+	10      1049    4689
+	
+### 2- Rm UNSORTED.bam
+
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+
+	$ salloc 
+	salloc: Pending job allocation 9276492
+	salloc: job 9276492 queued and waiting for resources
+	salloc: job 9276492 has been allocated resources
+	salloc: Granted job allocation 9276492
+	
+	$ nano rm_unsort_bam.sh
+	
+	#!/bin/bash -l
+
+	#SBATCH -o rm_unsort_bam.txt
+	#SBATCH -n 1
+	#SBATCH --mail-user=kpark049@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=rm_unsort_bam
+		
+	rm *UNSORTED.bam
+	
+	$ sbatch rm_unsort_bam.sh
+	Submitted batch job 9276497
+
+### 3- Run the following to start genotyping your SNPs for filtering next class
+
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+	
+	$ nano mergedfastq.sh
+
+	#!/bin/bash -l
+
+	#SBATCH -o mergedfastq.txt
+	#SBATCH -n 1         
+	#SBATCH --mail-user=kpark049@odu.edu
+	#SBATCH --mail-type=END
+	#SBATCH --job-name=mergedfastq
+
+	enable_lmod
+	module load dDocent
+	freebayes --genotype-qualities -f /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/refassembly/15079_Apoc_hostsym.fasta *.bam > KPmergedfastqs.vcf
+
+	$ salloc 
+	salloc: Pending job allocation 9276572
+	salloc: job 9276572 queued and waiting for resources
+	salloc: job 9276572 has been allocated resources
+	salloc: Granted job allocation 9276572
+	
+	$  sbatch mergedfastq.sh
+	Submitted batch job 9276574
+
+
