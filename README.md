@@ -1028,7 +1028,7 @@
 	#SBATCH -n 1         
 	#SBATCH --mail-user=kpark049@odu.edu
 	#SBATCH --mail-type=END
-	#SBATCH --job-name=mergedfastq
+	#SBATCH --job-name=mergedfastq-
 
 	enable_lmod
 	module load dDocent
@@ -1044,3 +1044,233 @@
 	Submitted batch job 9276574
 
 
+## Day 08 Homework 2021-Feb-12
+### Make sure to add all this to your logfile as you go, including the output from the various scripts/greps/etc.
+### 1- Clean up your data directory by:
+	-Making a SAMS folder and mv all your .sam files into that directory
+	-Make a BAMS folder and mv all your .bam files and .bam.bai files into that directory
+	-rm your _unfiltered.vcf files if you have any
+	-rm your .fastq files
+	-Make a VCF folder in your data directory and mv your YOURNAMEmergedfastqs.vcf into this directory (if your freebayes job didn't complete then skip this step)
+
+
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/
+	
+	$ mkdir SAMS
+	$ mkdir BAMS 
+	
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs
+	
+	$ mv *.bam *.bam.bai ../../SAMS/
+	$ mv *.bam *.bam.bai ../../BAMS/
+	
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/
+	
+	$ mkdir VCF 
+	
+	
+### 2- Start an interactive session via salloc
+### 3- cp the /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/VCF/mergedfastq_HEAAstrangiaAssembly.vcf to your VCF folder
+	
+	$pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/VCF
+	
+	$ salloc
+	salloc: Pending job allocation 9278248
+	salloc: job 9278248 queued and waiting for resources
+	salloc: job 9278248 has been allocated resources
+	salloc: Granted job allocation 9278248
+
+	$ cp /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/VCF/mergedfastq_HEAAstrangiaAssembly.vcf ./
+	$ cp /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/fastq/QCFastqs/KPmergedfastqs.vcf ./
+
+### 4- Determine the number of individuals and variant sites in the class vcf file (and yours if it worked) using:
+/cm/shared/apps/vcftools/0.1.12b/bin/vcftools --vcf mergedfastq_HEAAstrangiaAssembly.vcf
+
+	$ enable_lmod
+	$ module load dDocent
+	$ vcftools
+
+	VCFtools (0.1.14)
+	© Adam Auton and Anthony Marcketta 2009
+
+	Process Variant Call Format files
+
+	For a list of options, please go to:
+			https://vcftools.github.io/man_latest.html
+
+	Alternatively, a man page is available, type:
+			man vcftools
+
+	Questions, comments, and suggestions should be emailed to:
+			vcftools-help@lists.sourceforge.net
+			
+	$ vcftools --vcf mergedfastq_HEAAstrangiaAssembly.vcf
+
+	VCFtools - 0.1.14
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--vcf mergedfastq_HEAAstrangiaAssembly.vcf
+
+	After filtering, kept 40 out of 40 Individuals
+	After filtering, kept 1214003 out of a possible 1214003 Sites
+
+
+### 5- cp the /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/VCF/GoodCoralGenelistForVCFSubsetter.txt into your directory with your .vcf files
+
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/VCF
+	
+	$ cp /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/VCF/GoodCoralGenelistForVCFSubsetter.txt ./
+
+### 6- Run our host vcf extractor on your merged vcf file using the following syntax:
+
+/cm/shared/courses/dbarshis/21AdvGenomics/scripts/21Sp_vcfsubsetter_advbioinf.py GoodCoralGenelistForVCFSubsetter.txt mergedfastq_HEAAstrangiaAssembly.vcf
+
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/VCF
+	
+	$salloc
+	salloc: Pending job allocation 9278269
+	salloc: job 9278269 queued and waiting for resources
+	salloc: job 9278269 has been allocated resources
+	salloc: Granted job allocation 9278269
+
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/scripts/21Sp_vcfsubsetter_advbioinf.py GoodCoralGenelistForVCFSubsetter.txt mergedfastq_HEAAstrangiaAssembly.vcf
+
+### 7- Compare the number of variant sites in your three files (YOURNAMEmergedfastqs.vcf,  mergedfastq_HEAAstrangiaAssembly.vcf, and  mergedfastq_HEAAstrangiaAssembly_subset.vcf) using:
+/cm/shared/apps/vcftools/0.1.12b/bin/vcftools --vcf 
+
+	$ vcftools --vcf KPmergedfastqs.vcf
+
+	VCFtools - 0.1.14
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--vcf KPmergedfastqs.vcf
+
+	After filtering, kept 16 out of 16 Individuals
+	After filtering, kept 156555 out of a possible 156555 Sites
+	Run Time = 1.00 seconds
+	
+	$ vcftools --vcf mergedfastq_HEAAstrangiaAssembly.vcf
+
+	VCFtools - 0.1.14
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--vcf mergedfastq_HEAAstrangiaAssembly.vcf
+
+	After filtering, kept 40 out of 40 Individuals
+	After filtering, kept 1214003 out of a possible 1214003 Sites
+	Run Time = 8.00 seconds
+	
+	$ vcftools --vcf mergedfastq_HEAAstrangiaAssembly_subset.vcf
+	
+	VCFtools - 0.1.14
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--vcf mergedfastq_HEAAstrangiaAssembly_subset.vcf
+
+	After filtering, kept 40 out of 40 Individuals
+	After filtering, kept 432676 out of a possible 432676 Sites
+	Run Time = 10.00 seconds
+	
+### 8- Work through the VCF filtering tutorial until the following step: Now that we have a list of individuals to remove, we can feed that directly into VCFtools for filtering. vcftools --vcf raw.g5mac3dp3.recode.vcf --remove lowDP.indv --recode --recode-INFO-all --out raw.g5mac3dplm
+
+	$ vcftools --gzvcf raw.vcf.gz --max-missing 0.5 --mac 3 --minQ 30 --recode --recode-INFO-all --out raw.g5mac3
+
+	VCFtools - 0.1.14
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--gzvcf raw.vcf.gz
+			--recode-INFO-all
+			--mac 3
+			--minQ 30
+			--max-missing 0.5
+			--out raw.g5mac3
+			--recode
+
+	stat error: No such file or directory
+	Error: Can't determine file type of raw.vcf.gz
+	
+	$ vcftools --vcf raw.g5mac3.recode.vcf --minDP 3 --recode --recode-INFO-all --out raw.g5mac3dp3
+
+	VCFtools - 0.1.14
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--vcf raw.g5mac3.recode.vcf
+			--recode-INFO-all
+			--minDP 3
+			--out raw.g5mac3dp3
+			--recode
+
+	After filtering, kept 40 out of 40 Individuals
+	Outputting VCF file...
+	After filtering, kept 220678 out of a possible 220678 Sites
+	Run Time = 64.00 seconds
+	
+	$ vcftools --vcf raw.g5mac3dp3.recode.vcf --missing-indv
+
+	VCFtools - 0.1.14
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--vcf raw.g5mac3dp3.recode.vcf
+			--missing-indv
+
+	After filtering, kept 40 out of 40 Individuals
+	Outputting Individual Missingness
+	After filtering, kept 220678 out of a possible 220678 Sites
+	Run Time = 6.00 seconds
+		
+	$ cat out.imiss
+	INDV    N_DATA  N_GENOTYPES_FILTERED    N_MISS  F_MISS
+	RI_W_06_merged  220678  0       151465  0.686362
+	RI_W_07_merged  220678  0       145497  0.659318
+	VA_B_03_merged  220678  0       131829  0.597382
+	RI_W_02_merged  220678  0       163659  0.741619
+	RI_W_04_merged  220678  0       155927  0.706582
+	VA_W_09_SNP_clipped     220678  0       55284   0.250519
+	RI_B_08_SNP_clipped     220678  0       193465  0.876685
+	VA_W_08_SNP_clipped     220678  0       185040  0.838507
+	VA_B_08_SNP_clipped     220678  0       208032  0.942695
+	VA_W_02_merged  220678  0       162675  0.73716
+	VA_B_07_merged  220678  0       141377  0.640648
+	RI_B_05_merged  220678  0       96252   0.436165
+	VA_W_06_merged  220678  0       149048  0.675409
+	VA_W_04_merged  220678  0       118231  0.535763
+	VA_W_01_merged  220678  0       154807  0.701506
+	VA_B_10_SNP_clipped     220678  0       184129  0.834379
+	VA_B_06_merged  220678  0       134740  0.610573
+	VA_W_05_merged  220678  0       149210  0.676144
+	RI_B_09_SNP_clipped     220678  0       184248  0.834918
+	VA_W_10_SNP_clipped     220678  0       184172  0.834573
+	RI_W_08_SNP_clipped     220678  0       173229  0.784985
+	RI_B_06_merged  220678  0       178049  0.806827
+	RI_W_10_SNP_clipped     220678  0       197774  0.896211
+	RI_B_04_merged  220678  0       106679  0.483415
+	VA_W_03_merged  220678  0       141899  0.643014
+	RI_B_07_merged  220678  0       156527  0.7093
+	RI_W_05_merged  220678  0       129818  0.588269
+	RI_W_09_SNP_clipped     220678  0       195857  0.887524
+	VA_B_01_merged  220678  0       95061   0.430768
+	VA_B_09_SNP_clipped     220678  0       176471  0.799676
+	RI_B_10_SNP_clipped     220678  0       182335  0.826249
+	RI_W_01_merged  220678  0       160443  0.727046
+	RI_B_01_merged  220678  0       154152  0.698538
+	VA_B_04_merged  220678  0       126840  0.574774
+	RI_B_02_merged  220678  0       190042  0.861173
+	RI_W_03_merged  220678  0       93822   0.425153
+	VA_B_02_merged  220678  0       173371  0.785629
+	VA_W_07_merged  220678  0       148956  0.674993
+	VA_B_05_merged  220678  0       122967  0.557224
+	RI_B_03_merged  220678  0       174067  0.788783
+	
