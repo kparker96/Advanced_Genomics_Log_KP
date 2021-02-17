@@ -1341,10 +1341,8 @@ Day09-VCF to Genepop to PCAs
 	
 ### 5- Switch to the adegenet_PCAs.R script and follow through the steps to produce some of the figures.
 
-![](Figures/PCAS.png)
-
-<img src="Figures/PCAS.png"
-     style="float: left; margin-right: 10px;" />    
+![](PCAS.png)
+  
 ___  
 
 ![](Figures/pop_elip.png)  
