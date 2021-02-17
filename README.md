@@ -1274,3 +1274,87 @@
 	VA_B_05_merged  220678  0       122967  0.557224
 	RI_B_03_merged  220678  0       174067  0.788783
 	
+Day09-VCF to Genepop to PCAs
+### 1-  Run one of the following sets of prescribed filters on your mergedfastq_HEAAstrangiaAssembly_subset.vcf, note these are fairly conservative filters
+
+### Half the class run the following
+/cm/shared/apps/vcftools/0.1.12b/bin/vcftools --vcf mergedfastq_HEAAstrangiaAssembly_subset.vcf --maf 0.015 --max-alleles 2 --max-missing 0.5 --minQ 30 --minGQ 20 --minDP 3 --remove-indels --hwe 0.01 --recode --recode-INFO-all --out 18718_mergedfastq_HEAAstrangiaAssembly_subset_ClassFilters
+
+### the other half run the filters we used from the paper
+/cm/shared/apps/vcftools/0.1.12b/bin/vcftools --vcf mergedfastq_HEAAstrangiaAssembly_subset.vcf --max-missing 0.5 --mac 3 --minQ 30 --minDP 10 --max-alleles 2 --maf 0.015 --remove-indels --recode --recode-INFO-all --out 1578_mergedfastq_HEAAstrangiaAssembly_subset_HEAFilters
+	
+	$ pwd 
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/VCF
+
+	$ /cm/shared/apps/vcftools/0.1.12b/bin/vcftools --vcf mergedfastq_HEAAstrangiaAssembly_subset.vcf --max-missing 0.5 --mac 3 --minQ 30 --minDP 10 --max-alleles 2 --maf 0.015 --remove-indels --recode --recode-INFO-all --out 1578_mergedfastq_HEAAstrangiaAssembly_subset_HEAFilters
+
+	VCFtools - v0.1.12b
+	(C) Adam Auton and Anthony Marcketta 2009
+
+	Parameters as interpreted:
+			--vcf mergedfastq_HEAAstrangiaAssembly_subset.vcf
+			--recode-INFO-all
+			--mac 3
+			--maf 0.015
+			--max-alleles 2
+			--minDP 10
+			--minQ 30
+			--max-missing 0.5
+			--out 1578_mergedfastq_HEAAstrangiaAssembly_subset_HEAFilters
+			--recode
+			--remove-indels
+
+	After filtering, kept 40 out of 40 Individuals
+	Outputting VCF file...
+	After filtering, kept 1578 out of a possible 432676 Sites
+	Run Time = 12.00 seconds
+
+### 2- Make a population file containing two columns with no header, tab delimited text the first column should be the individual name and the second column the population to which that individual belongs
+	
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/VCF
+	
+	$ cut -f 1 out.imiss | tail -n+2
+	* copy pasted into excel and edited using formulas =LEFT(A2,4) and =MID(A1,6,2) *
+	
+	$ nano popfile.txt 
+	* paste in from Excel File *
+	
+### 3- Convert your filtered .vcf file to genepop format using the following command:
+/cm/shared/courses/dbarshis/21AdvGenomics/scripts/vcftogenepop_advbioinf.py YOURFILTERED.vcf YOUR_PopFile.txt
+
+	$ salloc
+	salloc: Pending job allocation 9280305
+	salloc: job 9280305 queued and waiting for resources
+	salloc: job 9280305 has been allocated resources
+	salloc: Granted job allocation 9280305
+	
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/scripts/vcftogenepop_advbioinf.py 1578_mergedfastq_HEAAstrangiaAssembly_subset_HEAFilters.recode.vcf popfile.txt
+
+
+### 4- SCP your YOURFILE_allfilters.recode_subset_genepop.gen file to your laptop
+	
+	$ pwd 
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/VCF
+	
+	$ scp kpark049@turing.hpc.odu.edu:/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/VCF/1578_mergedfastq_HEAAstrangiaAssembly_subset_HEAFilters.1578_mergedfastq_HEAAstrangiaAssembly_subset_HEAFilters.recode_genepop.gen ./
+	
+### 5- Switch to the adegenet_PCAs.R script and follow through the steps to produce some of the figures.
+
+![](Figures/PCAS.png)    
+___  
+
+![](Figures/pop_elip.png)  
+___  
+  
+
+![](Figures/mydata.png)  
+___  
+
+![](Figures/snapclust.png)  
+___  
+
+![](Figures/compoplot.png)
+
+	
+	
