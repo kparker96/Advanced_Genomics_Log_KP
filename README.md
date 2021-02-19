@@ -1357,5 +1357,35 @@ ___
 
 ![](Figures/compoplot.png)
 
+## Day10 Homework:
+### 1- Work through the adegenet_PCAs.R script and follow through the steps to produce some of the figures.
+
+### run step 2 as an sbatch .sh script because it will take a while to finish
+
+### 2- cd into your SAMS folder containing your .sams and run the following as an sbatch script on your sam files to generate read mapping counts from each individual file:
+/cm/shared/courses/dbarshis/21AdvGenomics/scripts/countxpression_SB_advbioinf.py *.sam
+
+	$ pwd
+	/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/SAMS
+
+	$ salloc
+	salloc: Pending job allocation 9280869
+	salloc: job 9280869 queued and waiting for resources
+	salloc: job 9280869 has been allocated resources
+	salloc: Granted job allocation 9280869
 	
+	$ sbatch /cm/shared/courses/dbarshis/21AdvGenomics/scripts/countxpression_SB_advbioinf.py *.sam
+
+### 3- Once your job from step 1 is finished, start an salloc session and run the following on your outputted _counts.txt files:
+/cm/shared/courses/dbarshis/21AdvGenomics/scripts/ParseExpression2BigTable_advbioinf.py /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/host_genelist.txt YOURNAMEFullCounts_summed.txt NoMatch *_counts.txt
+	
+	$ /cm/shared/courses/dbarshis/21AdvGenomics/scripts/ParseExpression2BigTable_advbioinf.py /cm/shared/courses/dbarshis/21AdvGenomics/classdata/Astrangia_poculata/host_genelist.txt KP_FullCounts_summed.txt NoMatch *_counts.txt
+	
+### 4- scp YOURNAMEFullCounts_summed.txt to your laptop
+
+	$ scp kpark049@turing.hpc.odu.edu:/cm/shared/courses/dbarshis/21AdvGenomics/sandboxes/kparker/data/SAMS/KP_FullCounts_summed.txt ./
+
+### 5- edit the first line of YOURNAMEFullCounts_summed.txt to remove the _counts.txt_UniqueTotReads from each sample name to just retain the actual informative part of the sample name (e.g., RI_W_06_18)
+
+	* used find and replace in notepad ++ to remove unwanted file name *
 	
